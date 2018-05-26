@@ -1,18 +1,22 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion rootProject.appTargetSdk
     defaultConfig {
-        applicationId "es.niux.efc.demoapp"
+        applicationId 'es.niux.efc.demoapp'
         minSdkVersion 15
-        targetSdkVersion 27
-        versionCode 1
-        versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        targetSdkVersion rootProject.appTargetSdk
+        versionCode rootProject.appVersionCode
+        versionName rootProject.appVersionName
+        testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
+    }
+    compileOptions {
+        sourceCompatibility = rootProject.javaSourceCompatibility
+        targetCompatibility = rootProject.javaTargetCompatibility
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -20,9 +24,18 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:appcompat-v7:27.1.1'
-    implementation 'com.android.support:design:27.1.1'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+
+    testImplementation "junit:junit:$rootProject.depJUnit"
+    androidTestImplementation "com.android.support.test:runner:$rootProject.depJUnitRunner"
+    androidTestImplementation "com.android.support.test.espresso:espresso-core:$rootProject.depEspresso"
+
+    implementation project(':core')
+
+    implementation "com.google.dagger:dagger:$rootProject.depDagger"
+    annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.depDagger"
+    implementation "com.google.dagger:dagger-android-support:$rootProject.depDagger"
+    annotationProcessor "com.google.dagger:dagger-android-processor:$rootProject.depDagger"
+
+    implementation "com.jakewharton:butterknife:$rootProject.depButterKnife"
+    annotationProcessor "com.jakewharton:butterknife-compiler:$rootProject.depButterKnife"
 }

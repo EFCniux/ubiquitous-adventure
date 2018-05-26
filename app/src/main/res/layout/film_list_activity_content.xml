@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".presentation.feature.film.list.FilmListActivityImpl"
+    tools:showIn="@layout/film_list_activity">
+
+    <ViewAnimator
+        android:id="@+id/va_main_films"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:animateFirstView="true"
+        android:inAnimation="@anim/enter_fade"
+        android:outAnimation="@anim/exit_fade">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </FrameLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_main_films"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </ViewAnimator>
+
+</FrameLayout>

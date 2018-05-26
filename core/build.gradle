@@ -1,0 +1,29 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion rootProject.appTargetSdk
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion rootProject.appTargetSdk
+        versionCode rootProject.appVersionCode
+        versionName rootProject.appVersionName
+    }
+    compileOptions {
+        sourceCompatibility = rootProject.javaSourceCompatibility
+        targetCompatibility = rootProject.javaTargetCompatibility
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    api "com.android.support:support-annotations:$rootProject.depAndroidSupport"
+
+    api "io.reactivex.rxjava2:rxjava:$rootProject.depRxJava"
+    api "io.reactivex.rxjava2:rxandroid:$rootProject.depRxAndroid"
+
+    api "com.android.support:support-v4:$rootProject.depAndroidSupport"
+    api "com.android.support:appcompat-v7:$rootProject.depAndroidSupport"
+    api "com.android.support:recyclerview-v7:$rootProject.depAndroidSupport"
+    api "com.android.support:design:$rootProject.depAndroidSupport"
+}
