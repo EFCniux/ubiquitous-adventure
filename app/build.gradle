@@ -1,5 +1,8 @@
 apply plugin: 'com.android.application'
 
+def configProperties = new Properties()
+configProperties.load(new FileInputStream(rootProject.file("buildconfig/config.properties")))
+
 android {
     compileSdkVersion rootProject.appTargetSdk
     defaultConfig {
@@ -18,6 +21,9 @@ android {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        buildTypes.each {
+            it.buildConfigField('String', 'TMDB_API_KEY', configProperties.getProperty("TMDB_API_KEY"))
         }
     }
 }
@@ -38,4 +44,22 @@ dependencies {
 
     implementation "com.jakewharton:butterknife:$rootProject.depButterKnife"
     annotationProcessor "com.jakewharton:butterknife-compiler:$rootProject.depButterKnife"
+
+    implementation "com.google.code.gson:gson:$rootProject.depGson"
+    implementation "com.squareup.okhttp3:okhttp:$rootProject.depOkHttp"
+    implementation "com.squareup.retrofit2:retrofit:$rootProject.depRetrofit"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$rootProject.depRetrofit"
+    implementation "com.squareup.retrofit2:converter-gson:$rootProject.depRetrofit"
+
+    implementation "com.github.bumptech.glide:glide:$rootProject.depGlide"
+    implementation "com.github.bumptech.glide:okhttp3-integration:$rootProject.depGlide"
+    annotationProcessor "com.github.bumptech.glide:compiler:$rootProject.depGlide"
+
+    implementation "android.arch.paging:runtime:$rootProject.depAnddoidPaging"
+    implementation "android.arch.paging:rxjava2:$rootProject.depAnddoidPagingRxJava"
+
+    implementation "com.android.support.constraint:constraint-layout:$rootProject.depAndroidConstraintLayout"
+    implementation "com.android.support:cardview-v7:$rootProject.depAndroidSupport"
+
+    implementation "me.zhanghai.android.materialprogressbar:library:$rootProject.depMaterialProgress"
 }

@@ -5,18 +5,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".presentation.feature.film.list.FilmListActivityImpl"
-    tools:showIn="@layout/film_list_activity">
+    tools:context=".presentation.feature.movie.list.MovieListActivityImpl"
+    tools:showIn="@layout/movie_list_activity">
 
     <ViewAnimator
-        android:id="@+id/va_main_films"
+        android:id="@+id/va_movie"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:animateFirstView="true"
         android:inAnimation="@anim/enter_fade"
         android:outAnimation="@anim/exit_fade">
 
-        <FrameLayout
+        <!-- todo -->
+        <!--<FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
         </FrameLayout>
@@ -24,13 +25,12 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-        </FrameLayout>
+        </FrameLayout>-->
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_main_films"
+            android:id="@+id/rv_movie"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
     </ViewAnimator>
-
 </FrameLayout>

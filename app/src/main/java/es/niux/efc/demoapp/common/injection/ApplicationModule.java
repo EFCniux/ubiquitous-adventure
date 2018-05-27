@@ -10,14 +10,19 @@ import es.niux.efc.core.common.util.Check;
 import es.niux.efc.demoapp.TheApplication;
 import es.niux.efc.demoapp.common.ApplicationSchedulers;
 import es.niux.efc.demoapp.common.ApplicationSchedulersImpl;
-import es.niux.efc.demoapp.common.injection.presentation.feature.film.list.FilmListComponent;
+import es.niux.efc.demoapp.common.injection.data.DataRepositoryModule;
+import es.niux.efc.demoapp.common.injection.data.DataSourceModule;
+import es.niux.efc.demoapp.common.injection.domain.DomainInteractorDataSource;
+import es.niux.efc.demoapp.common.injection.presentation.feature.movie.list.MovieListComponent;
 import es.niux.efc.demoapp.common.injection.presentation.feature.splash.SplashComponent;
 
 @Module(includes = {
-        // todo
+        DataSourceModule.class,
+        DataRepositoryModule.class,
+        DomainInteractorDataSource.class,
 }, subcomponents = {
         SplashComponent.class,
-        FilmListComponent.class,
+        MovieListComponent.class,
 })
 class ApplicationModule {
     @Provides @Singleton Context provideApplicationContext(

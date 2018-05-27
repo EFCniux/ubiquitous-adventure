@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="es.niux.efc.demoapp">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:name=".TheApplication"
         android:allowBackup="true"
@@ -20,7 +23,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".presentation.feature.film.list.FilmListActivityImpl"
+            android:name=".presentation.feature.movie.list.MovieListActivityImpl"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>
 </manifest>

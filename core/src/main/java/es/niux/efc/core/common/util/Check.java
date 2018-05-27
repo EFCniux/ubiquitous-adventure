@@ -75,14 +75,14 @@ public final class Check {
     //--endregion Array-----------------------------------------------------------------------------
     //--region Collection---------------------------------------------------------------------------
 
-    public static @NonNull <T> Collection<T> nonNullCol(
-            @Nullable Collection<T> col, boolean canBeEmpty
+    public static @NonNull <T, C extends Collection<T>> C nonNullCol(
+            @Nullable C col, boolean canBeEmpty
     ) {
         return nonNullCol(col, canBeEmpty, null);
     }
 
-    public static @NonNull <T> Collection<T> nonNullCol(
-            @Nullable Collection<T> col, boolean canBeEmpty, @Nullable String reason
+    public static @NonNull <T, C extends Collection<T>> C nonNullCol(
+            @Nullable C col, boolean canBeEmpty, @Nullable String reason
     ) {
         Check.nonNull(col, reason);
         if (!canBeEmpty && col.size() == 0) {
@@ -97,15 +97,14 @@ public final class Check {
     //--endregion Collection------------------------------------------------------------------------
     //--region Map----------------------------------------------------------------------------------
 
-    public static @NonNull <K, V> Map<K, V> nonNullMap(
-            @Nullable Map<K, V> map, boolean canBeEmpty
+    public static @NonNull <K, V, M extends Map<K, V>> M nonNullMap(
+            @Nullable M map, boolean canBeEmpty
     ) {
         return nonNullMap(map, canBeEmpty, null);
     }
 
-
-    public static @NonNull <K, V> Map<K, V> nonNullMap(
-            @Nullable Map<K, V> map, boolean canBeEmpty, @Nullable String reason
+    public static @NonNull <K, V, M extends Map<K, V>> M nonNullMap(
+            @Nullable M map, boolean canBeEmpty, @Nullable String reason
     ) {
         Check.nonNull(map, reason);
         if (!canBeEmpty && map.size() == 0) {

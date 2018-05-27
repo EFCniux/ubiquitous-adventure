@@ -5,13 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".presentation.feature.film.list.FilmListActivityImpl">
+    tools:context=".presentation.feature.movie.list.MovieListActivityImpl">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/abl"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fitsSystemWindows="true"
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.v7.widget.Toolbar
@@ -19,8 +18,22 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+        <me.zhanghai.android.materialprogressbar.MaterialProgressBar
+            android:id="@+id/pb_abl"
+            style="@style/Widget.MaterialProgressBar.ProgressBar.Horizontal.NoPadding"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-4dp"
+            app:mpb_progressStyle="horizontal"
+            app:mpb_setBothDrawables="true"
+            app:mpb_showProgressBackground="false"
+            app:mpb_useIntrinsicPadding="false"
+            tools:layout_height="4dp"
+            tools:progress="33"
+            tools:secondaryProgress="66" />
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/film_list_activity_content" />
+    <include layout="@layout/movie_list_activity_content" />
 
 </android.support.design.widget.CoordinatorLayout>

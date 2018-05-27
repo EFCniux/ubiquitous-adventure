@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">EFC\'s Demo App</string>
+    <string name="action_failure_retry">Retry</string>
 </resources>

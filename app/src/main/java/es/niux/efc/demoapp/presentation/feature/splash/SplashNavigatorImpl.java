@@ -6,7 +6,7 @@ import javax.inject.Inject;
 
 import es.niux.efc.core.common.util.Check;
 import es.niux.efc.core.presentation.navigator.Navigator;
-import es.niux.efc.demoapp.presentation.feature.film.list.FilmListActivityImpl;
+import es.niux.efc.demoapp.presentation.feature.movie.list.MovieListActivityImpl;
 
 public class SplashNavigatorImpl extends Navigator implements SplashNavigator {
     private final @NonNull SplashActivity activity;
@@ -19,6 +19,6 @@ public class SplashNavigatorImpl extends Navigator implements SplashNavigator {
 
     @Override
     public void onNavigateMain() {
-        activityChange(FilmListActivityImpl.getCallingIntent(activity.getActivity()));
+        activityChange(MovieListActivityImpl.getCallingIntent(activity.getActivity()));
     }
 }

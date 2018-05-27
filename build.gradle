@@ -62,4 +62,36 @@ ext {
      * https://github.com/ReactiveX/RxAndroid
      */
     depRxAndroid = '2.0.2'
+
+    /**
+     * https://github.com/google/gson
+     */
+    depGson = '2.8.5'
+    /**
+     * https://github.com/square/okhttp
+     */
+    depOkHttp = '3.10.0'
+    /**
+     * https://github.com/square/retrofit
+     */
+    depRetrofit = '2.4.0'
+    /**
+     * https://github.com/bumptech/glide
+     */
+    depGlide = '4.7.1'
+
+    /**
+     * https://developer.android.com/topic/libraries/architecture/paging/
+     */
+    depAnddoidPaging = '1.0.0'
+    depAnddoidPagingRxJava = '1.0.0-rc1'
+
+    /**
+     * https://developer.android.com/training/constraint-layout/index.html
+     */
+    depAndroidConstraintLayout = '1.1.0'
+    /**
+     * https://github.com/DreaminginCodeZH/MaterialProgressBar
+     */
+    depMaterialProgress = '1.4.2'
 }
