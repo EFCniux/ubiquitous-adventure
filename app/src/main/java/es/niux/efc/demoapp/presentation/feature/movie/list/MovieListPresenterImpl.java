@@ -4,18 +4,25 @@ import android.arch.paging.PagedList;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import es.niux.efc.core.common.util.Check;
 import es.niux.efc.core.domain.listener.observer.ObservableDisposableObserver;
 import es.niux.efc.core.presentation.navigator.INavigator;
 import es.niux.efc.demoapp.common.ApplicationSchedulers;
+import es.niux.efc.demoapp.data.entity.Keyword;
 import es.niux.efc.demoapp.data.entity.Movie;
 import es.niux.efc.demoapp.domain.interactor.PopularMoviePagedListInteractor;
+import es.niux.efc.demoapp.domain.interactor.SearchKeywordListInteractor;
+import io.reactivex.ObservableSource;
+import io.reactivex.functions.Function;
 
 public class MovieListPresenterImpl implements MovieListPresenter {
     private final @NonNull MovieListActivity activity;
     private final @NonNull ApplicationSchedulers schedulers;
+    private final @NonNull SearchKeywordListInteractor keywordListInteractor;
     private final @NonNull PopularMoviePagedListInteractor popularMoviePagedListInteractor;
     private @Nullable PopularMoviePagedListObserver popularMoviePagedListObserver;
 
@@ -23,16 +30,13 @@ public class MovieListPresenterImpl implements MovieListPresenter {
     public MovieListPresenterImpl(
             @NonNull MovieListActivity activity,
             @NonNull ApplicationSchedulers schedulers,
+            @NonNull SearchKeywordListInteractor keywordListInteractor,
             @NonNull PopularMoviePagedListInteractor popularMoviePagedListInteractor
     ) {
         this.activity = Check.nonNull(activity);
         this.schedulers = Check.nonNull(schedulers);
+        this.keywordListInteractor = Check.nonNull(keywordListInteractor);
         this.popularMoviePagedListInteractor = Check.nonNull(popularMoviePagedListInteractor);
-    }
-
-    @Override
-    public void onStart() {
-        startGetPagedMovies();
     }
 
     @Override
@@ -45,11 +49,35 @@ public class MovieListPresenterImpl implements MovieListPresenter {
         return null;
     }
 
-    private void startGetPagedMovies() {
+    @Override
+    public void onGetMovieList(@Nullable String query) {
+        startGetPagedMovies(query);
+    }
+
+    private void startGetPagedMovies(@Nullable String query) {
         stopGetPagedMovies();
-        if (popularMoviePagedListObserver == null) {
+        if (query == null) {
             popularMoviePagedListObserver = popularMoviePagedListInteractor
-                    .build(new PopularMoviePagedListInteractor.Params(ASYNC_OPERATION_MOVIE_LIST_PAGING, activity))
+                    .build(new PopularMoviePagedListInteractor.Params(
+                            ASYNC_OPERATION_MOVIE_LIST_PAGING, activity, null
+                    ))
+                    .observeOn(schedulers.main())
+                    .subscribeWith(new PopularMoviePagedListObserver(ASYNC_OPERATION_MOVIE_LIST));
+        } else {
+            popularMoviePagedListObserver = keywordListInteractor
+                    .build(query)
+                    .map((List<Keyword> keywords) -> {
+                        int[] idsKeyword = new int[keywords.size()];
+                        for (int i = 0, l = keywords.size(); i < l; i++) {
+                            idsKeyword[i] = keywords.get(i).getId();
+                        }
+                        return idsKeyword;
+                    })
+                    .flatMapObservable((Function<int[], ObservableSource<PagedList<Movie>>>) idsKeyword -> popularMoviePagedListInteractor
+                            .build(new PopularMoviePagedListInteractor.Params(
+                                    ASYNC_OPERATION_MOVIE_LIST_PAGING, activity, idsKeyword
+                            ))
+                    )
                     .observeOn(schedulers.main())
                     .subscribeWith(new PopularMoviePagedListObserver(ASYNC_OPERATION_MOVIE_LIST));
         }
@@ -88,9 +116,9 @@ public class MovieListPresenterImpl implements MovieListPresenter {
         @Override
         public void onError(@NonNull Throwable e) {
             super.onError(e);
-            activity.onAsyncError(asyncOperationId, e,
-                    MovieListPresenterImpl.this::startGetPagedMovies
-            );
+            activity.onAsyncError(asyncOperationId, e, () -> {
+                startGetPagedMovies(null); // todo
+            });
         }
 
         @Override

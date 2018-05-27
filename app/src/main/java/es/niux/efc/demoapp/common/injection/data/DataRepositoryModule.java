@@ -4,6 +4,8 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import es.niux.efc.demoapp.data.repository.KeywordRepository;
+import es.niux.efc.demoapp.data.repository.KeywordRepositoryImpl;
 import es.niux.efc.demoapp.data.repository.MovieRepository;
 import es.niux.efc.demoapp.data.repository.MovieRepositoryImpl;
 
@@ -13,5 +15,11 @@ public class DataRepositoryModule {
             MovieRepositoryImpl movieRepository
     ) {
         return movieRepository;
+    }
+
+    @Provides @Singleton KeywordRepository provideKeywordRepository(
+            KeywordRepositoryImpl keywordRepository
+    ) {
+        return keywordRepository;
     }
 }

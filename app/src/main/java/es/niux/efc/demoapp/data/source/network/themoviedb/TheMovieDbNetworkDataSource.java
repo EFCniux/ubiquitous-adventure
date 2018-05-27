@@ -16,7 +16,7 @@ public interface TheMovieDbNetworkDataSource {
             @Query("api_key") @NonNull String apiKey,
             @Query("sort_by") @NonNull String sortBy,
             @Query("page") int page,
-            @Query("with_keywords") @Nullable int[] idsKeyWord
+            @Query("with_keywords") @Nullable String idsKeyWord
     );
 
     @GET("search/keyword")

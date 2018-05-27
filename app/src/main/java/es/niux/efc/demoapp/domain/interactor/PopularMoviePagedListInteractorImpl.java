@@ -6,6 +6,8 @@ import android.arch.paging.PagedList;
 import android.arch.paging.RxPagedListBuilder;
 import android.support.annotation.NonNull;
 
+import java.util.concurrent.Callable;
+
 import javax.inject.Inject;
 
 import es.niux.efc.core.common.util.Check;
@@ -15,6 +17,8 @@ import es.niux.efc.demoapp.data.entity.Movie;
 import es.niux.efc.demoapp.data.entity.Page;
 import es.niux.efc.demoapp.data.repository.MovieRepository;
 import io.reactivex.Observable;
+import io.reactivex.Single;
+import io.reactivex.SingleSource;
 import io.reactivex.disposables.CompositeDisposable;
 
 public class PopularMoviePagedListInteractorImpl implements PopularMoviePagedListInteractor {
@@ -98,8 +102,16 @@ public class PopularMoviePagedListInteractorImpl implements PopularMoviePagedLis
                 @NonNull LoadInitialParams<Integer> params,
                 @NonNull LoadInitialCallback<Integer, Movie> callback
         ) {
-            disposables.add(movieRepository
-                    .getPopularMovies(1)
+            disposables.add(Single
+                    .defer((Callable<SingleSource<Page<Movie>>>) () -> {
+                        if (buildParams.idsKeyword != null) {
+                            return movieRepository
+                                    .getPopularMovies(1, buildParams.idsKeyword);
+                        } else {
+                            return movieRepository
+                                    .getPopularMovies(1);
+                        }
+                    })
                     .subscribeOn(schedulers.io())
                     .observeOn(schedulers.main())
                     .subscribeWith(new MoviePageKeyedObserver(buildParams) {
@@ -129,8 +141,16 @@ public class PopularMoviePagedListInteractorImpl implements PopularMoviePagedLis
                 @NonNull LoadParams<Integer> params,
                 @NonNull LoadCallback<Integer, Movie> callback
         ) {
-            disposables.add(movieRepository
-                    .getPopularMovies(params.key)
+            disposables.add(Single
+                    .defer((Callable<SingleSource<Page<Movie>>>) () -> {
+                        if (buildParams.idsKeyword != null) {
+                            return movieRepository
+                                    .getPopularMovies(params.key, buildParams.idsKeyword);
+                        } else {
+                            return movieRepository
+                                    .getPopularMovies(params.key);
+                        }
+                    })
                     .subscribeOn(schedulers.io())
                     .observeOn(schedulers.main())
                     .subscribeWith(new MoviePageKeyedObserver(buildParams) {
@@ -158,8 +178,16 @@ public class PopularMoviePagedListInteractorImpl implements PopularMoviePagedLis
                 @NonNull LoadParams<Integer> params,
                 @NonNull LoadCallback<Integer, Movie> callback
         ) {
-            disposables.add(movieRepository
-                    .getPopularMovies(params.key)
+            disposables.add(Single
+                    .defer((Callable<SingleSource<Page<Movie>>>) () -> {
+                        if (buildParams.idsKeyword != null) {
+                            return movieRepository
+                                    .getPopularMovies(params.key, buildParams.idsKeyword);
+                        } else {
+                            return movieRepository
+                                    .getPopularMovies(params.key);
+                        }
+                    })
                     .subscribeOn(schedulers.io())
                     .observeOn(schedulers.main())
                     .subscribeWith(new MoviePageKeyedObserver(buildParams) {

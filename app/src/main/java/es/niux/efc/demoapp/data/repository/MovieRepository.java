@@ -8,5 +8,5 @@ import io.reactivex.Single;
 
 public interface MovieRepository {
     @NonNull Single<Page<Movie>> getPopularMovies(int page);
-    @NonNull Single<Page<Movie>> getPopularMovies(int page, int[] idsKeyword);
+    @NonNull Single<Page<Movie>> getPopularMovies(int page, @NonNull int[] idsKeyword);
 }

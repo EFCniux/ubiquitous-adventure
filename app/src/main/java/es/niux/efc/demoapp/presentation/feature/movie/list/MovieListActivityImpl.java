@@ -14,9 +14,11 @@ import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -31,11 +33,14 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import dagger.android.AndroidInjection;
 import es.niux.efc.core.common.util.Check;
+import es.niux.efc.core.common.util.Patterns;
 import es.niux.efc.core.common.util.Res;
 import es.niux.efc.core.presentation.presenter.IPresenter;
+import es.niux.efc.core.presentation.view.text.TextChangedListener;
 import es.niux.efc.demoapp.R;
 import es.niux.efc.demoapp.common.injection.glide.GlideApp;
 import es.niux.efc.demoapp.data.entity.Movie;
+import es.niux.efc.demoapp.domain.exception.KeywordQueryException;
 import es.niux.efc.demoapp.presentation.view.activity.BaseActivity;
 import es.niux.efc.demoapp.presentation.view.async.IAsyncHelper;
 
@@ -49,6 +54,7 @@ public class MovieListActivityImpl extends BaseActivity implements MovieListActi
     @BindView(R.id.pb_abl) ProgressBar progressBar;
     @BindView(R.id.va_movie) ViewAnimator vaMovie;
     @BindView(R.id.rv_movie) RecyclerView rvMovie;
+    @BindView(R.id.et_keyword) EditText etKeyword;
     private IAsyncHelper asyncHelper;
     private MovieListAdapter adapter;
     private AlertDialog dialogMovieError;
@@ -82,6 +88,17 @@ public class MovieListActivityImpl extends BaseActivity implements MovieListActi
         ));
         rvMovie.setAdapter(adapter);
 
+        etKeyword.addTextChangedListener(new TextChangedListener() {
+            @Override public void afterTextChanged(@NonNull Editable s) {
+                String query = s.toString();
+                if (Patterns.NOT_EMPTY.matcher(query).matches()) {
+                    presenter.onGetMovieList(query);
+                } else {
+                    presenter.onGetMovieList(null);
+                }
+            }
+        });
+        presenter.onGetMovieList(null);
     }
 
     @Override
@@ -113,10 +130,16 @@ public class MovieListActivityImpl extends BaseActivity implements MovieListActi
         switch (asyncOperationId) {
             case MovieListPresenter.ASYNC_OPERATION_MOVIE_LIST:
                 if (dialogMovieError != null) dialogMovieError.dismiss();
-                dialogMovieError = asyncHelper.onCreateErrorDialog(asyncOperationId, e, retry)
-                        .setOnDismissListener(dialog -> dialogMovieError = null)
-                        .create();
-                dialogMovieError.show();
+                if (e instanceof KeywordQueryException) {
+                    Snackbar make = Snackbar.make(rvMovie, e.getMessage(), Snackbar.LENGTH_SHORT);
+                    if (retry != null) make.setAction(R.string.action_failure_retry, v -> retry.run());
+                    make.show();
+                } else {
+                    dialogMovieError = asyncHelper.onCreateErrorDialog(asyncOperationId, e, retry)
+                            .setOnDismissListener(dialog -> dialogMovieError = null)
+                            .create();
+                    dialogMovieError.show();
+                }
                 break;
             case MovieListPresenter.ASYNC_OPERATION_MOVIE_LIST_PAGING:
                 Snackbar make = Snackbar.make(rvMovie, e.getMessage(), Snackbar.LENGTH_INDEFINITE);
@@ -171,7 +194,7 @@ public class MovieListActivityImpl extends BaseActivity implements MovieListActi
             GlideApp.with(MovieListActivityImpl.this)
                     .load(item.getPicture())
                     .placeholder(R.drawable.ic_app_color_48dp)
-                    .centerCrop()
+                    .fitCenter()
                     .into(holder.ivPicture);
 
             holder.tvTitle.setText(item.getTitle());

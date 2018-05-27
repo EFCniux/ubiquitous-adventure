@@ -2,6 +2,7 @@ package es.niux.efc.demoapp.domain.interactor;
 
 import android.arch.paging.PagedList;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import es.niux.efc.core.common.util.Check;
 import es.niux.efc.core.domain.interactor.ObservableInteractor;
@@ -14,10 +15,15 @@ public interface PopularMoviePagedListInteractor
     final class Params {
         public final int asyncOperationId;
         public final @NonNull IAsync async;
+        public final @Nullable int[] idsKeyword;
 
-        public Params(int asyncOperationId, @NonNull IAsync async) {
+        public Params(
+                int asyncOperationId, @NonNull IAsync async,
+                @Nullable int[] idsKeyword
+        ) {
             this.asyncOperationId = asyncOperationId;
             this.async = Check.nonNull(async);
+            this.idsKeyword = idsKeyword;
         }
     }
 }

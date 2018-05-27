@@ -10,6 +10,7 @@ public class NetworkException extends IOException {
     private final @Nullable Response response;
 
     public NetworkException(@Nullable Response response) {
+        super(response != null ? "Code: " + response.code() : "");
         this.response = response;
     }
 
