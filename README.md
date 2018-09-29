@@ -1,6 +1,8 @@
 # ubiquitous-adventure
 
-A demo project that connects to [TheMovieDB](https://developers.themoviedb.org/3) api to display a inifinite list of movies that can be filtered by keyword.
+A demo project built in arround 2 days that connects to [TheMovieDB](https://developers.themoviedb.org/3) api to display a inifinite list of movies that can be filtered by keyword.
+
+[**Read this before building this project!**](https://github.com/EFCniux/ubiquitous-adventure/blob/master/buildconfig/README.md)
 
 ## Important tech used
 
